@@ -1,9 +1,14 @@
 <template>
-  <div>Money</div>
+  <div>
+    Money
+    <Nav />
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Money",
+};
 </script>
 
 <style lang="scss" scoped></style>
