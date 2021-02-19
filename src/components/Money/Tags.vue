@@ -12,8 +12,10 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="js">
+export default {
+  name:"Tags"
+};
 </script>
 
 <style lang="scss" scoped>
