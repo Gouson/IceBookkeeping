@@ -8,22 +8,23 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {Component} from "vue-property-decorator";
+import Vue from 'vue';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 @Component
 export default class Type extends Vue {
-  type = "-";
+  @Prop() readonly type!: string;
+
   selectType(type: string) {
-    if (type !== "-" && type !== "+") {
-      throw new Error("Type is unknown");
+    if (type !== '-' && type !== '+') {
+      throw new Error('Type is unknown');
     }
-    this.type = type;
   }
+
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/style/helper.scss";
+@import '~@/assets/style/helper.scss';
 .types {
   background: #c4c4c4;
   display: flex;
@@ -36,7 +37,7 @@ export default class Type extends Vue {
     align-items: center;
     position: relative;
     &.selected::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       width: 100%;
