@@ -9,13 +9,14 @@
 
 <script>
 export default {
-  props: ["classPrefix"],
-  name: "Layout",
+  props: ['classPrefix'],
+  name: 'Layout'
 };
 </script>
 
 <style lang="scss" scoped>
 .nav-wrapper {
+  background: #F5F5F5;
   display: flex;
   flex-direction: column;
   height: 100vh;
