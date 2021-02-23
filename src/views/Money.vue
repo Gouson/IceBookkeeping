@@ -15,24 +15,24 @@
 </template>
 
 <script lang="ts">
-import NumberPad from '@/components/Money/NumberPad.vue';
-import Type from '@/components/Money/Type.vue';
-import FormItem from '@/components/Money/FormItem.vue';
-import Tags from '@/components/Money/Tags.vue';
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import store from '@/store/index2.ts';
+import NumberPad from "@/components/Money/NumberPad.vue";
+import Type from "@/components/Money/Type.vue";
+import FormItem from "@/components/Money/FormItem.vue";
+import Tags from "@/components/Money/Tags.vue";
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import store from "@/store/index2.ts";
 @Component({
-  components: { NumberPad, Type, FormItem, Tags }
+  components: { NumberPad, Type, FormItem, Tags },
 })
 export default class Money extends Vue {
   tags = store.tagList;
   recordList = store.recordList;
   record: RecordItem = {
     tags: [],
-    notes: '',
-    type: '+',
-    amount: 0
+    notes: "",
+    type: "+",
+    amount: 0,
   };
   onUpdateTags(value: string[]) {
     this.record.tags = value;
@@ -45,7 +45,7 @@ export default class Money extends Vue {
   }
 }
 </script>
-<style lang="scss" >
+<style lang="scss">
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
