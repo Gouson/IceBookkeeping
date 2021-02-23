@@ -1,13 +1,15 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="backIcon" name="back" />
+      <Icon class="backIcon" name="back" @click="goback" />
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
-    <div class="form-wrapper"><FormItem field-name="备注" /></div>
+    <div class="form-wrapper">
+      <FormItem field-name="备注" :value="tag.name" @update:value="update" />
+    </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click="remove">删除标签</Button>
     </div>
   </Layout>
 </template>
@@ -22,16 +24,34 @@ import Button from '@/components/Button.vue';
   components: { FormItem, Button }
 })
 export default class EditLabel extends Vue {
+  tag?: { id: string; name: string } = undefined;
   created() {
     const id = this.$route.params.id;
     tagListModel.fetch();
     const tags = tagListModel.data;
     const tag = tags.filter((t) => t.id === id)[0];
     if (tag) {
-      console.log(tag);
+      this.tag = tag;
     } else {
       this.$router.replace('/404');
     }
+  }
+  update(name: string) {
+    if (this.tag) {
+      tagListModel.update(this.tag.id, name);
+    }
+  }
+  remove() {
+    if (this.tag) {
+      if (tagListModel.remove(this.tag.id)) {
+        this.goback();
+      } else {
+        window.alert('删除失败');
+      }
+    }
+  }
+  goback() {
+    this.$router.back();
   }
 }
 </script>

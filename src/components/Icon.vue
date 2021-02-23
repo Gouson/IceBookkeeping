@@ -1,25 +1,21 @@
 <template>
   <svg class="icon">
-    <use :xlink:href="'#' + name" />
+    <use :xlink:href="'#' + name" @click="$emit('click', $event)" />
   </svg>
 </template>
 
 <script>
-// import label from "@/assets/icons/label.svg";
-// import money from "@/assets/icons/money.svg";
-// import statistics from "@/assets/icons/statistics.svg";
-import Icon from "@/components/Icon.vue";
 // 引入整个文件夹
 const importAll = (requireContext) =>
   requireContext.keys().forEach(requireContext);
 try {
-  importAll(require.context("../assets/icons", true, /\.svg$/));
+  importAll(require.context('../assets/icons', true, /\.svg$/));
 } catch (error) {
   console.log(error);
 }
 export default {
-  props: ["name"],
-  name: "Icon",
+  props: ['name'],
+  name: 'Icon'
 };
 </script>
 
