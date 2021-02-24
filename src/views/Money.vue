@@ -10,38 +10,37 @@
       />
     </div>
 
-    <Tags :dataSource.sync="tags" @update:value="onUpdateTags" />
+    <Tags />
   </Layout>
 </template>
 
 <script lang="ts">
-import NumberPad from "@/components/Money/NumberPad.vue";
-import Type from "@/components/Money/Type.vue";
-import FormItem from "@/components/Money/FormItem.vue";
-import Tags from "@/components/Money/Tags.vue";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import store from "@/store/index2.ts";
+import NumberPad from '@/components/Money/NumberPad.vue';
+import Type from '@/components/Money/Type.vue';
+import FormItem from '@/components/Money/FormItem.vue';
+import Tags from '@/components/Money/Tags.vue';
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
 @Component({
   components: { NumberPad, Type, FormItem, Tags },
+  computed: {
+    recordList() {
+      return this.$store2.recordList;
+    }
+  }
 })
 export default class Money extends Vue {
-  tags = store.tagList;
-  recordList = store.recordList;
   record: RecordItem = {
     tags: [],
-    notes: "",
-    type: "+",
-    amount: 0,
+    notes: '',
+    type: '+',
+    amount: 0
   };
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
-  }
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
   saveRecord() {
-    store.createRecord(this.record);
+    this.$store2.createRecord(this.record);
   }
 }
 </script>
