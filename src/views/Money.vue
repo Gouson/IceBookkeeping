@@ -9,7 +9,6 @@
         @update:value="onUpdateNotes"
       />
     </div>
-
     <Tags />
   </Layout>
 </template>
@@ -25,7 +24,7 @@ import { Component } from 'vue-property-decorator';
   components: { NumberPad, Type, FormItem, Tags },
   computed: {
     recordList() {
-      return this.$store2.recordList;
+      return this.$store.state.recordList;
     }
   }
 })
@@ -40,7 +39,10 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() {
-    this.$store2.createRecord(this.record);
+    this.$store.commit('createRecord', this.record);
+  }
+  created() {
+    this.$store.commit('fetchRecords');
   }
 }
 </script>

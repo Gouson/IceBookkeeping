@@ -5,7 +5,7 @@
     </div>
     <ul class="current">
       <li
-        v-for="tag in tagsLists"
+        v-for="tag in tagLists"
         :key="tag.id"
         @click="toggle(tag)"
         :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
@@ -17,14 +17,18 @@
 </template>
 
 <script lang="ts">
-import store from '@/store/index2';
-import Vue from 'vue';
+import TagHelper from '@/mixins/TagHelper';
+import { mixins } from 'vue-class-component';
 import { Component } from 'vue-property-decorator';
-@Component
-export default class Tags extends Vue {
-  tagsLists = store.fetchTags();
+@Component({})
+export default class Tags extends mixins(TagHelper) {
   selectedTags: string[] = [];
-
+  get tagLists() {
+    return this.$store.state.tagList;
+  }
+  created() {
+    this.$store.commit('fetchTags');
+  }
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
@@ -33,13 +37,6 @@ export default class Tags extends Vue {
       this.selectedTags.push(tag);
     }
     this.$emit('update:value', this.selectedTags);
-  }
-  createTag() {
-    const name = window.prompt('请输入标签名');
-    if (!name) {
-      return window.alert('标签名不能为空');
-    }
-    store.createTag(name);
   }
 }
 </script>

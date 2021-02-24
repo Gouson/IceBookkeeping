@@ -2,13 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
-import store from './store'
+import store from '@/store'
 import Nav from '@/components/Nav.vue'
 import Layout from '@/components/Layout.vue'
 import Icon from '@/components/Icon.vue';
-import store2 from '@/store/index2'
 Vue.config.productionTip = false
-Vue.prototype.$store2 = store2
 Vue.component('Nav', Nav)
 Vue.component('Layout', Layout)
 Vue.component('Icon', Icon)
