@@ -9,6 +9,7 @@
       class-prefix="interval"
       :data-source="intervalList"
       :value.sync="interval"
+      :height="'48px'"
     />
     <div>type:{{ type }} inter:{{ interval }}</div>
   </Layout>
@@ -32,17 +33,18 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .type-tabs-item {
-  background: white;
-  &.selected {
-    background: #c4c4c4;
-    &::after {
-      display: none;
+::v-deep {
+  .type-tabs-item {
+    background: white;
+    &.selected {
+      background: #c4c4c4;
+      &::after {
+        display: none;
+      }
     }
   }
-}
-
-::v-deep .interval-tabs-item {
-  height: 48px;
+  .interval-tabs-item {
+    height: 48px;
+  }
 }
 </style>
