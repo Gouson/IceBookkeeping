@@ -9,22 +9,52 @@
       class-prefix="interval"
       :data-source="intervalList"
       :value.sync="interval"
-      :height="'48px'"
     />
-    <div>type:{{ type }} inter:{{ interval }}</div>
+
+    <ol>
+      <li v-for="(group, name) in result" :key="name">
+        <h3 class="title">{{ name }}</h3>
+        <ol>
+          <li class="record" v-for="item in group" :key="item.id">
+            <span>{{ tagString(item.tags) }}</span>
+            <span class="notes">{{ item.notes }}</span>
+            <span>￥{{ item.amount }}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
   </Layout>
 </template>
 
-<script>
-import Tabs from '@/components/Tabs';
+<script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 import intervalList from '@/constants/intervalList';
 @Component({
   components: { Tabs }
 })
 export default class Statistics extends Vue {
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+  get result() {
+    const { recordList } = this;
+    const hashTable: { [key: string]: RecordItem[] } = {};
+    for (let i = 0; i < recordList.length; i++) {
+      const [date] = recordList[i].createdAt!.split('T');
+      hashTable[date] = hashTable[date] || [];
+      hashTable[date].push(recordList[i]);
+    }
+    return hashTable;
+  }
+  tagString(tags: Tag[]) {
+    return tags.length === 0 ? '无' : tags.join('|');
+  }
+  beforeCreate() {
+    this.$store.commit('fetchRecords');
+  }
   type = '-';
   interval = 'day';
   intervalList = intervalList;
@@ -46,5 +76,24 @@ export default class Statistics extends Vue {
   .interval-tabs-item {
     height: 48px;
   }
+}
+%item {
+  padding: 8px 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  @extend %item;
+}
+.record {
+  background: white;
+  @extend %item;
+}
+.notes {
+  margin-right: auto;
+  margin-left: 16px;
+  color: #999;
 }
 </style>
