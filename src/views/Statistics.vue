@@ -13,7 +13,7 @@
 
     <ol>
       <li v-for="(group, name) in result" :key="name">
-        <h3 class="title">{{ name }}</h3>
+        <h3 class="title">{{ beautify(name) }}</h3>
         <ol>
           <li class="record" v-for="item in group" :key="item.id">
             <span>{{ tagString(item.tags) }}</span>
@@ -32,6 +32,7 @@ import { Component } from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 import intervalList from '@/constants/intervalList';
+import dayjs from 'dayjs';
 @Component({
   components: { Tabs }
 })
@@ -51,6 +52,17 @@ export default class Statistics extends Vue {
   }
   tagString(tags: Tag[]) {
     return tags.length === 0 ? '无' : tags.join('|');
+  }
+  beautify(string: string) {
+    if (dayjs(string).isSame(dayjs(), 'day')) {
+      return '今天';
+    } else if (dayjs(string).isSame(dayjs().subtract(1, 'day'), 'day')) {
+      return '昨天';
+    } else if (dayjs(string).isSame(dayjs(), 'year')) {
+      return dayjs(string).format('MM月DD日');
+    } else {
+      return dayjs(string).format('YYYY年MM月DD日');
+    }
   }
   beforeCreate() {
     this.$store.commit('fetchRecords');
