@@ -14,4 +14,8 @@
   -moz-osx-font-smoothing: grayscale;
   color: #333;
 }
+.app {
+  max-width: 500px;
+  margin: 0 auto;
+}
 </style>
