@@ -19,15 +19,3 @@ new Vue({
 }).$mount('#app')
 
 window.onload = function () { setTimeout(function () { window.scrollTo(0, 100) }, 0) }
-
-
-if (document.documentElement.clientWidth > 500) {
-  window.alert('建议使用手机浏览')
-  const img = document.createElement('img')
-  img.src = '/shaving-ice-bookkeeping-website/qrcode.png'
-  img.style.position = 'fixed'
-  img.style.left = "80%"
-  img.style.top = "60%"
-  img.style.boxShadow = '0 0 10px rgba(0,0,0,0.25)'
-  document.body.append(img)
-}
