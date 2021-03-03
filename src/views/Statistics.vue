@@ -5,7 +5,7 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-
+    <div class="noContent" v-if="groupedList.length === 0">木有收支记录哦</div>
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -48,6 +48,9 @@ export default class Statistics extends Vue {
       .sort((a, b) => {
         return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
       });
+    if (newList.length === 0) {
+      return [] as Result;
+    }
     type Result = {
       title: string;
       total?: number;
@@ -129,5 +132,11 @@ export default class Statistics extends Vue {
   margin-right: auto;
   margin-left: 16px;
   color: #999;
+}
+.noContent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
 }
 </style>
