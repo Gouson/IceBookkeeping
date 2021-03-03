@@ -8,7 +8,9 @@
 
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
-        <h3 class="title">{{ beautify(group.title) }}<span>￥{{ group.total }}</span></h3>
+        <h3 class="title">
+          {{ beautify(group.title) }}<span>￥{{ group.total }}</span>
+        </h3>
         <ol>
           <li class="record" v-for="item in group.items" :key="item.id">
             <span>{{ tagString(item.tags) }}</span>
@@ -26,7 +28,6 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
-import intervalList from '@/constants/intervalList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 @Component({
@@ -76,7 +77,8 @@ export default class Statistics extends Vue {
     return result;
   }
   tagString(tags: Tag[]) {
-    return tags.length === 0 ? '无' : tags.join('|');
+    const x = tags.map((item) => item.name);
+    return x.length === 0 ? '无' : x.join(' | ');
   }
   beautify(string: string) {
     if (dayjs(string).isSame(dayjs(), 'day')) {

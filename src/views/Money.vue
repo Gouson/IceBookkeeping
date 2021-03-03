@@ -9,7 +9,7 @@
         @update:value="onUpdateNotes"
       />
     </div>
-    <Tags />
+    <Tags @update:value="updateTags" />
   </Layout>
 </template>
 
@@ -19,7 +19,6 @@ import FormItem from '@/components/Money/FormItem.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-
 import recordTypeList from '@/constants/recordTypeList';
 import Tabs from '@/components/Tabs.vue';
 @Component({
@@ -40,6 +39,9 @@ export default class Money extends Vue {
   recordTypeList = recordTypeList;
   onUpdateNotes(value: string) {
     this.record.notes = value;
+  }
+  updateTags(value: []) {
+    this.record.tags = value;
   }
   saveRecord() {
     this.$store.commit('createRecord', this.record);
