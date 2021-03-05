@@ -5,6 +5,7 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
+    <Chart :options="options" />
     <div class="noContent" v-if="groupedList.length === 0">木有收支记录哦</div>
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
@@ -30,8 +31,9 @@ import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import Chart from '../components/Chart.vue';
 @Component({
-  components: { Tabs }
+  components: { Tabs, Chart }
 })
 export default class Statistics extends Vue {
   get recordList() {
@@ -99,6 +101,26 @@ export default class Statistics extends Vue {
   }
   type = '-';
   recordTypeList = recordTypeList;
+  options = {
+    title: {
+      text: 'ECharts 入门示例'
+    },
+    tooltip: { show: true },
+    legend: {
+      data: ['销量']
+    },
+    xAxis: {
+      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '销量',
+        type: 'line',
+        data: [5, 20, 36, 10, 10, 20]
+      }
+    ]
+  };
 }
 </script>
 
@@ -133,7 +155,7 @@ export default class Statistics extends Vue {
   margin-left: 16px;
   color: #999;
 }
-.noContent{
+.noContent {
   display: flex;
   justify-content: center;
   align-items: center;
