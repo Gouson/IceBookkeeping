@@ -18,6 +18,7 @@
       />
     </div>
     <Tags @update:value="updateTags" />
+    {{record}}
   </Layout>
 </template>
 

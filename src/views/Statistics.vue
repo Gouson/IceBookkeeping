@@ -1,12 +1,13 @@
 <template>
   <Layout>
+    {{ groupedList }}
     <Tabs
       class-prefix="type"
       :data-source="recordTypeList"
       :value.sync="type"
     />
     <div class="chart-wrapper" ref="chartWrapper">
-      <Chart class="chart" :options="options" />
+      <Chart class="chart" :options="chartOptions" />
     </div>
     <div class="noContent" v-if="groupedList.length === 0">木有收支记录哦</div>
     <ol>
@@ -34,6 +35,7 @@ import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 import Chart from '../components/Chart.vue';
+import _ from 'lodash';
 @Component({
   components: { Tabs, Chart }
 })
@@ -102,15 +104,41 @@ export default class Statistics extends Vue {
     this.$store.commit('fetchRecords');
   }
   mounted() {
-    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+    const div = this.$refs.chartWrapper as HTMLDivElement;
+    div.scrollLeft = div.scrollWidth;
   }
   type = '-';
   recordTypeList = recordTypeList;
-  get options() {
+  get keyValuesList() {
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(new Date())
+        .subtract(i, 'day')
+        .format('YYYY-MM-DD');
+      const found = _.find(this.groupedList, {
+        title: dateString
+      });
+      array.push({
+        key: dateString,
+        value: found ? found.total : 0
+      });
+    }
+    array.sort((a, b) => {
+      if (dayjs(a.key).isAfter(dayjs(b.key))) {
+        return 1;
+      } else if (a.key === b.key) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+
+    return array;
+  }
+  get chartOptions() {
+    const keys = this.keyValuesList.map((item) => item.key);
+    const values = this.keyValuesList.map((item) => item.value);
     return {
-      title: {
-        text: 'ECharts 入门示例'
-      },
       grid: {
         left: 0,
         right: 0
@@ -121,21 +149,25 @@ export default class Statistics extends Vue {
         formatter: '{c}',
         position: 'top'
       },
-      legend: {
-        data: ['销量']
-      },
+
       xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'],
+        data: keys,
         axisTick: {
           alignWithLabel: true
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return value.substr(5);
+          }
         }
       },
-      yAxis: {},
+      yAxis: {
+        show: false
+      },
       series: [
         {
-          name: '销量',
           type: 'line',
-          data: [5, 20, 36, 10, 10, 20],
+          data: values,
           itemStyle: {
             borderWidth: 1,
             color: '#666',
