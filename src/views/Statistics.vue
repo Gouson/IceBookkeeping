@@ -5,7 +5,9 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <Chart :options="options" />
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="options" />
+    </div>
     <div class="noContent" v-if="groupedList.length === 0">木有收支记录哦</div>
     <ol>
       <li v-for="(group, index) in groupedList" :key="index">
@@ -99,28 +101,52 @@ export default class Statistics extends Vue {
   beforeCreate() {
     this.$store.commit('fetchRecords');
   }
+  mounted() {
+    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+  }
   type = '-';
   recordTypeList = recordTypeList;
-  options = {
-    title: {
-      text: 'ECharts 入门示例'
-    },
-    tooltip: { show: true },
-    legend: {
-      data: ['销量']
-    },
-    xAxis: {
-      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '销量',
-        type: 'line',
-        data: [5, 20, 36, 10, 10, 20]
-      }
-    ]
-  };
+  get options() {
+    return {
+      title: {
+        text: 'ECharts 入门示例'
+      },
+      grid: {
+        left: 0,
+        right: 0
+      },
+      tooltip: {
+        show: true,
+        triggerOn: 'click',
+        formatter: '{c}',
+        position: 'top'
+      },
+      legend: {
+        data: ['销量']
+      },
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'],
+        axisTick: {
+          alignWithLabel: true
+        }
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量',
+          type: 'line',
+          data: [5, 20, 36, 10, 10, 20],
+          itemStyle: {
+            borderWidth: 1,
+            color: '#666',
+            borderColor: '#666'
+          },
+          symbolSize: 12,
+          symbol: 'circle'
+        }
+      ]
+    };
+  }
 }
 </script>
 
@@ -160,5 +186,14 @@ export default class Statistics extends Vue {
   justify-content: center;
   align-items: center;
   padding: 30px;
+}
+.chart {
+  width: 400%;
+  &-wrapper {
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>
